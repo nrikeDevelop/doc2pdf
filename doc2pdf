@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#Remove spaces
+find ./ -name "* *" -type f | rename 's/ /_/g'
+
+#Convert any doc/docx
+lowriter --convert-to pdf *.docx 
+lowriter --convert-to pdf *.doc
+lowriter --convert-to pdf *.xls
+
+#Get first page 
+for i in *.pdf
+do	
+	pdftoppm -jpeg -f 1 -l 1 $i $i
+done
