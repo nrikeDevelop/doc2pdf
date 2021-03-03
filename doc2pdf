@@ -1,5 +1,49 @@
 #!/bin/bash
 
+function help(){
+	echo -e "doc2pdf <option>"
+	echo -e "\t --p \t path, default path ./ "
+	echo -e "\t --install \t install doc2pdf in system"
+}
+
+function install(){
+	if [ $(id -u) != 0 ];then
+		echo -e "You must be root"
+		exit 0
+	fi
+
+	if [ -d /usr/local/bin ];then 
+		cp doc2pdf /usr/local/bin
+		echo "[+] Installed"
+	else
+		echo "[-] Not found /usr/local/bin"
+	fi
+}
+
+function main(){
+	echo $1
+}
+
+
+if [ $1 ];then
+
+	case $1 in
+		--install)
+				install
+		;;
+		-p)
+			echo "funca"
+		;;  
+
+	   *) echo "nada" ;; 
+	esac
+else
+	help
+fi
+
+
+exit 0; 
+
 #Remove spaces
 find ./ -name "* *" -type f | rename 's/ /_/g'
 
@@ -10,6 +54,6 @@ lowriter --convert-to pdf *.xls
 
 #Get first page 
 for i in *.pdf
-do	
+do
 	pdftoppm -jpeg -f 1 -l 1 $i $i
 done
